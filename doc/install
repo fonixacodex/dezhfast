@@ -1,0 +1,11 @@
+python -m venv .venv
+
+.\.venv\Scripts\Activate.ps1
+
+python -m pip install --upgrade pip
+
+pip install fastapi uvicorn
+or
+pip install "fastapi[standard]"
+
+python -m uvicorn app.main:app --reload

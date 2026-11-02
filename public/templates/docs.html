@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <meta name="description" content="DEZH Documentation — A modular FastAPI framework.">
+    <title>Documentation — DEZH</title>
+
+    <link rel="stylesheet" href="/css/dezh.css">
+    <link rel="stylesheet" href="/css/docs.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="docs-body">
+
+    <!-- Background -->
+    <div class="background-grid"></div>
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="container nav-inner">
+            <a href="/" class="brand">
+                <img src="/images/dezh-logo.png" alt="DEZH" class="brand-logo">
+                <span class="brand-name">DEZH</span>
+                <span class="brand-suffix">Docs</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="#installation">Install</a>
+                <a href="#quickstart">Quickstart</a>
+                <a href="#cli">CLI</a>
+                <a href="#modules">Modules</a>
+                <a href="#database">Database</a>
+                <a href="#exceptions">Errors</a>
+                <a href="#docker">Docker</a>
+            </nav>
+
+            <a href="https://github.com/fonixacodex/dezhfast.git" target="_blank" class="nav-button">
+                GitHub
+            </a>
+        </div>
+    </header>
+
+    <main class="docs-layout">
+
+        <!-- Sidebar -->
+        <aside class="docs-sidebar">
+            <div class="sidebar-section">
+                <h4>Getting Started</h4>
+                <a href="#installation">Installation</a>
+                <a href="#quickstart">Quickstart</a>
+                <a href="#structure">Project Structure</a>
+            </div>
+
+            <div class="sidebar-section">
+                <h4>CLI</h4>
+                <a href="#cli">Overview</a>
+                <a href="#cli-new">dezh new</a>
+                <a href="#cli-make">dezh make</a>
+                <a href="#cli-migrate">dezh migrate</a>
+                <a href="#cli-serve">dezh serve</a>
+                <a href="#cli-route">dezh route</a>
+                <a href="#cli-doctor">dezh doctor</a>
+            </div>
+
+            <div class="sidebar-section">
+                <h4>Core</h4>
+                <a href="#modules">Modules</a>
+                <a href="#di">DI Container</a>
+                <a href="#database">Database</a>
+                <a href="#exceptions">Exceptions</a>
+                <a href="#rate-limit">Rate Limiting</a>
+                <a href="#logging">Logging</a>
+            </div>
+
+            <div class="sidebar-section">
+                <h4>Deployment</h4>
+                <a href="#jobs">Jobs (ARQ)</a>
+                <a href="#docker">Docker</a>
+                <a href="#env">Environment</a>
+            </div>
+
+            <div class="sidebar-section">
+                <h4>Help</h4>
+                <a href="#troubleshooting">Troubleshooting</a>
+            </div>
+        </aside>
+
+        <!-- Content -->
+        <article class="docs-content">
+
+            <div class="docs-hero">
+                <span class="eyebrow">DOCUMENTATION</span>
+                <h1>Build with DEZH</h1>
+                <p>
+                    A modular FastAPI framework with an Artisan-style CLI,
+                    structured exceptions, request tracing, and multi-database support.
+                </p>
+            </div>
+
+            <!-- Installation -->
+            <section id="installation" class="docs-section">
+                <h2>Installation</h2>
+
+                <h3>Requirements</h3>
+                <ul>
+                    <li>Python 3.11+ (3.12 recommended)</li>
+                    <li>Redis (optional, for background jobs)</li>
+                    <li>Docker (optional)</li>
+                </ul>
+
+                <h3>Install</h3>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>bash</span>
+                    </div>
+                    <pre><code><span class="function">pip</span> install dezh</code></pre>
+                </div>
+            </section>
+
+            <!-- Quickstart -->
+            <section id="quickstart" class="docs-section">
+                <h2>Quickstart</h2>
+
+                <h3>1. Create a project</h3>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>bash</span>
+                    </div>
+                    <pre><code><span class="function">dezh</span> new myapp
+<span class="keyword">cd</span> myapp</code></pre>
+                </div>
+
+                <h3>2. Install and configure</h3>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>bash</span>
+                    </div>
+                    <pre><code><span class="function">py</span> -m venv .venv
+<span class="keyword">source</span> .venv/bin/activate      <span class="string"># Windows: .\.venv\Scripts\Activate.ps1</span>
+
+<span class="function">pip</span> install -e <span class="string">".[dev]"</span>
+<span class="function">cp</span> .env.example .env</code></pre>
+                </div>
+
+                <h3>3. Run</h3>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>bash</span>
+                    </div>
+                    <pre><code><span class="function">dezh</span> serve run</code></pre>
+                </div>
+
+                <p>Then open:</p>
+                <ul>
+                    <li><code>http://127.0.0.1:8000/docs</code> — Swagger UI</li>
+                    <li><code>http://127.0.0.1:8000/health</code> — liveness</li>
+                    <li><code>http://127.0.0.1:8000/ready</code> — readiness (with DB check)</li>
+                </ul>
+            </section>
+
+            <!-- Structure -->
+            <section id="structure" class="docs-section">
+                <h2>Project Structure</h2>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>tree</span>
+                    </div>
+                    <pre><code>myapp/
+├── <span class="function">app/</span>                    <span class="string"># your application code</span>
+│   ├── core/               <span class="string"># config, security, exceptions, middleware, logging</span>
+│   ├── api/                <span class="string"># shared HTTP layer</span>
+│   ├── database/           <span class="string"># engine, session, base</span>
+│   ├── modules/            <span class="string"># your domain modules</span>
+│   └── main.py
+├── <span class="function">framework/</span>              <span class="string"># reusable core (container, lifecycle, module)</span>
+├── <span class="function">cli/</span>                    <span class="string"># Artisan-style commands</span>
+├── resources/              <span class="string"># templates + static</span>
+├── storage/                <span class="string"># db, logs, uploads</span>
+├── tests/
+├── pyproject.toml
+├── Dockerfile
+├── docker-compose.yml
+└── .env.example</code></pre>
+                </div>
+            </section>
+
+            <!-- CLI -->
+            <section id="cli" class="docs-section">
+                <h2>CLI</h2>
+
+                <h3 id="cli-new">dezh new</h3>
+                <p>Create a new project.</p>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>bash</span>
+                    </div>
+                    <pre><code><span class="function">dezh</span> new myapp
+<span class="function">dezh</span> new myapp --no-git
+<span class="function">dezh</span> new myapp --install</code></pre>
+                </div>
+
+                <h3 id="cli-make">dezh make</h3>
+                <p>Scaffold components.</p>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>bash</span>
+                    </div>
+                    <pre><code><span class="function">dezh</span> make module posts
+<span class="function">dezh</span> make model Post -m posts
+<span class="function">dezh</span> make router posts
+<span class="function">dezh</span> make service Post -m posts
+<span class="function">dezh</span> make repository Post -m posts
+<span class="function">dezh</span> make schema Post -m posts
+<span class="function">dezh</span> make request PostCreate -m posts
+<span class="function">dezh</span> make test posts</code></pre>
+                </div>
+
+                <h3 id="cli-migrate">dezh migrate</h3>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>bash</span>
+                    </div>
+                    <pre><code><span class="function">dezh</span> migrate init
+<span class="function">dezh</span> migrate make <span class="string">"add users"</span>
+<span class="function">dezh</span> migrate up
+<span class="function">dezh</span> migrate down -n 1
+<span class="function">dezh</span> migrate status</code></pre>
+                </div>
+
+                <h3 id="cli-serve">dezh serve</h3>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>bash</span>
+                    </div>
+                    <pre><code><span class="function">dezh</span> serve run
+<span class="function">dezh</span> serve run --no-reload
+<span class="function">dezh</span> serve run -p 8080</code></pre>
+                </div>
+
+                <h3 id="cli-route">dezh route</h3>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>bash</span>
+                    </div>
+                    <pre><code><span class="function">dezh</span> route list</code></pre>
+                </div>
+
+                <h3 id="cli-doctor">dezh doctor</h3>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>bash</span>
+                    </div>
+                    <pre><code><span class="function">dezh</span> doctor run</code></pre>
+                </div>
+            </section>
+
+            <!-- Modules -->
+            <section id="modules" class="docs-section">
+                <h2>Modules</h2>
+
+                <p>Every module extends <code>BaseModule</code> and implements two methods:</p>
+
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>app/modules/posts/__init__.py</span>
+                    </div>
+                    <pre><code><span class="keyword">from</span> framework.module <span class="keyword">import</span> BaseModule
+
+
+<span class="keyword">class</span> <span class="function">PostsModule</span>(BaseModule):
+    name = <span class="string">"posts"</span>
+
+    <span class="keyword">def</span> <span class="function">register_di</span>(self, container) -> <span class="keyword">None</span>:
+        <span class="keyword">pass</span>
+
+    <span class="keyword">def</span> <span class="function">register_routes</span>(self, app) -> <span class="keyword">None</span>:
+        <span class="keyword">from</span> .router <span class="keyword">import</span> router
+        app.include_router(router, prefix=<span class="string">"/posts"</span>, tags=[<span class="string">"posts"</span>])</code></pre>
+                </div>
+
+                <p>Register it in <code>main.py</code>:</p>
+
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>app/main.py</span>
+                    </div>
+                    <pre><code><span class="keyword">from</span> app.modules.posts <span class="keyword">import</span> PostsModule
+
+factory.register_module(PostsModule())</code></pre>
+                </div>
+            </section>
+
+            <!-- DI -->
+            <section id="di" class="docs-section">
+                <h2>DI Container</h2>
+
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>python</span>
+                    </div>
+                    <pre><code><span class="string"># bind — new instance every resolve</span>
+container.bind(<span class="string">"email_sender"</span>, <span class="keyword">lambda</span> c: EmailSender())
+
+<span class="string"># singleton — one instance, cached</span>
+container.singleton(<span class="string">"db"</span>, <span class="keyword">lambda</span> c: create_engine(...))
+
+<span class="string"># instance — ready-made object</span>
+container.instance(<span class="string">"config"</span>, settings)
+
+<span class="string"># resolve</span>
+service = container.resolve(<span class="string">"posts_service"</span>)</code></pre>
+                </div>
+            </section>
+
+            <!-- Database -->
+            <section id="database" class="docs-section">
+                <h2>Database</h2>
+
+                <p>Supports SQLite, PostgreSQL, and MySQL via <code>DB_CONNECTION</code>.</p>
+
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>.env</span>
+                    </div>
+                    <pre><code><span class="string"># SQLite</span>
+DB_CONNECTION=sqlite
+DB_DATABASE=storage/db/dezh.db
+
+<span class="string"># PostgreSQL</span>
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE_NAME=dezh
+DB_USERNAME=dezh
+DB_PASSWORD=secret
+
+<span class="string"># MySQL</span>
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE_NAME=dezh
+DB_USERNAME=dezh
+DB_PASSWORD=secret</code></pre>
+                </div>
+
+                <h3>Auto-create tables</h3>
+                <p>In <code>main.py</code>, tables are created automatically in dev/staging:</p>
+
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>app/main.py</span>
+                    </div>
+                    <pre><code><span class="keyword">async def</span> <span class="function">_auto_create_tables</span>() -> <span class="keyword">None</span>:
+    <span class="keyword">if</span> settings.APP_ENV == <span class="string">"prod"</span>:
+        <span class="keyword">return</span>
+    import_all_models()
+    <span class="keyword">async with</span> engine.begin() <span class="keyword">as</span> conn:
+        <span class="keyword">await</span> conn.run_sync(Base.metadata.create_all)
+
+factory.lifecycle.add_startup(_auto_create_tables)</code></pre>
+                </div>
+            </section>
+
+            <!-- Exceptions -->
+            <section id="exceptions" class="docs-section">
+                <h2>Exception Handling</h2>
+
+                <p>12 ready-made exception classes:</p>
+
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>python</span>
+                    </div>
+                    <pre><code><span class="keyword">from</span> app.core.exceptions <span class="keyword">import</span> (
+    BadRequestError,        <span class="string"># 400</span>
+    UnauthorizedError,      <span class="string"># 401</span>
+    InvalidTokenError,      <span class="string"># 401</span>
+    ForbiddenError,         <span class="string"># 403</span>
+    AdminRequiredError,     <span class="string"># 403</span>
+    NotFoundError,          <span class="string"># 404</span>
+    ConflictError,          <span class="string"># 409</span>
+    ValidationError,        <span class="string"># 422</span>
+    RateLimitError,         <span class="string"># 429</span>
+    InternalError,          <span class="string"># 500</span>
+)</code></pre>
+                </div>
+
+                <p>Every error is returned in a unified format:</p>
+
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>json</span>
+                    </div>
+                    <pre><code>{
+  <span class="string">"error"</span>: {
+    <span class="string">"code"</span>: <span class="string">"not_found"</span>,
+    <span class="string">"message"</span>: <span class="string">"Post 42 not found"</span>,
+    <span class="string">"details"</span>: <span class="keyword">null</span>,
+    <span class="string">"request_id"</span>: <span class="string">"a1b2c3d4"</span>
+  }
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Rate Limiting -->
+            <section id="rate-limit" class="docs-section">
+                <h2>Rate Limiting</h2>
+
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>python</span>
+                    </div>
+                    <pre><code><span class="keyword">from</span> fastapi <span class="keyword">import</span> Request
+<span class="keyword">from</span> app.core.limiter <span class="keyword">import</span> limiter
+
+<span class="decorator">@router.post</span>(<span class="string">"/login"</span>)
+<span class="decorator">@limiter.limit</span>(<span class="string">"5/minute"</span>)
+<span class="keyword">async def</span> <span class="function">login</span>(request: Request, credentials: LoginSchema):
+    ...</code></pre>
+                </div>
+            </section>
+
+            <!-- Logging -->
+            <section id="logging" class="docs-section">
+                <h2>Logging</h2>
+
+                <p><strong>Dev:</strong> colored output with request IDs.</p>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>text</span>
+                    </div>
+                    <pre><code>22:25:05 INFO     app.core.middleware [a1b2c3d4] → GET /health
+22:25:05 INFO     app.core.middleware [a1b2c3d4] ← 200 GET /health (3.2ms)</code></pre>
+                </div>
+
+                <p><strong>Production:</strong> JSON structured logs.</p>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>json</span>
+                    </div>
+                    <pre><code>{
+  <span class="string">"timestamp"</span>: <span class="string">"2026-11-02T22:25:05+00:00"</span>,
+  <span class="string">"level"</span>: <span class="string">"INFO"</span>,
+  <span class="string">"logger"</span>: <span class="string">"app.core.middleware"</span>,
+  <span class="string">"message"</span>: <span class="string">"→ GET /health"</span>,
+  <span class="string">"request_id"</span>: <span class="string">"a1b2c3d4"</span>
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Jobs -->
+            <section id="jobs" class="docs-section">
+                <h2>Jobs (ARQ)</h2>
+
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>bash</span>
+                    </div>
+                    <pre><code><span class="function">pip</span> install arq redis
+<span class="function">arq</span> app.modules.jobs.worker.WorkerSettings</code></pre>
+                </div>
+
+                <h3>Enqueue</h3>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>python</span>
+                    </div>
+                    <pre><code>job = <span class="keyword">await</span> arq.enqueue_job(<span class="string">"send_email"</span>, <span class="string">"user@example.com"</span>, <span class="string">"Hi"</span>, <span class="string">"Body"</span>)
+<span class="function">print</span>(job.job_id)</code></pre>
+                </div>
+
+                <h3>API</h3>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>http</span>
+                    </div>
+                    <pre><code>POST /jobs/send-email?to=a@b.com&subject=hi&body=test
+GET  /jobs/{job_id}</code></pre>
+                </div>
+            </section>
+
+            <!-- Docker -->
+            <section id="docker" class="docs-section">
+                <h2>Docker</h2>
+
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>bash</span>
+                    </div>
+                    <pre><code><span class="function">docker</span> compose up --build
+<span class="function">docker</span> compose down
+<span class="function">docker</span> compose down -v    <span class="string"># also removes volumes</span></code></pre>
+                </div>
+
+                <p>Services: <code>api</code> (8000), <code>worker</code> (ARQ), <code>db</code> (PostgreSQL), <code>redis</code>.</p>
+            </section>
+
+            <!-- Env -->
+            <section id="env" class="docs-section">
+                <h2>Environment Variables</h2>
+
+                <table class="docs-table">
+                    <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Description</th>
+                            <th>Default</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>APP_NAME</code></td><td>App name</td><td><code>Dezh</code></td></tr>
+                        <tr><td><code>APP_ENV</code></td><td>dev | staging | prod</td><td><code>dev</code></td></tr>
+                        <tr><td><code>DEBUG</code></td><td>Debug mode</td><td><code>true</code></td></tr>
+                        <tr><td><code>SECRET_KEY</code></td><td>JWT signing key</td><td>required in prod</td></tr>
+                        <tr><td><code>DB_CONNECTION</code></td><td>sqlite | pgsql | mysql</td><td><code>sqlite</code></td></tr>
+                        <tr><td><code>DB_DATABASE</code></td><td>SQLite path</td><td><code>storage/db/dezh.db</code></td></tr>
+                        <tr><td><code>DB_HOST</code> / <code>DB_PORT</code></td><td>DB host / port</td><td><code>127.0.0.1</code> / <code>5432</code></td></tr>
+                        <tr><td><code>DB_DATABASE_NAME</code></td><td>DB name (pgsql/mysql)</td><td><code>dezh</code></td></tr>
+                        <tr><td><code>DB_USERNAME</code> / <code>DB_PASSWORD</code></td><td>Credentials</td><td><code>dezh</code> / (empty)</td></tr>
+                        <tr><td><code>CORS_ORIGINS</code></td><td>Comma-separated origins</td><td><code>http://localhost:3000,...</code></td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Troubleshooting -->
+            <section id="troubleshooting" class="docs-section">
+                <h2>Troubleshooting</h2>
+
+                <h3>ModuleNotFoundError: No module named 'app'</h3>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>bash</span>
+                    </div>
+                    <pre><code><span class="function">pip</span> install -e .</code></pre>
+                </div>
+
+                <h3>unable to open database file</h3>
+                <p>The <code>storage/db/</code> folder doesn't exist. Dezh creates it automatically in <code>_auto_create_tables</code>. If it still fails:</p>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>bash</span>
+                    </div>
+                    <pre><code><span class="function">mkdir</span> -p storage/db</code></pre>
+                </div>
+
+                <h3>ERR_CONNECTION_REFUSED</h3>
+                <p>The server is not running. Start it with <code>dezh serve run</code> and keep the terminal open.</p>
+
+                <h3>reload crashes on Python 3.14 (Windows)</h3>
+                <p>Known bug with <code>multiprocessing.spawn</code>. Use:</p>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-dots"><span></span><span></span><span></span></div>
+                        <span>bash</span>
+                    </div>
+                    <pre><code><span class="function">dezh</span> serve run --no-reload</code></pre>
+                </div>
+            </section>
+
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-inner">
+            <div class="footer-brand">
+                <img src="/images/dezh-logo.png" alt="DEZH">
+                <div>
+                    <strong>DEZH</strong>
+                    <span>Modern Python Backend Framework</span>
+                </div>
+            </div>
+            <p>Built for developers who build.</p>
+            <span class="copyright">© 2026 DEZH Framework</span>
+        </div>
+    </footer>
+
+    <script src="/js/dezh.js"></script>
+</body>
+</html>

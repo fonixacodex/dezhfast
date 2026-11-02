@@ -1,0 +1,120 @@
+[project]
+name = "dezh"
+version = "0.1.2"
+description = "A modular FastAPI framework with MCP + Artisan-style CLI"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [
+    { name = "fonixacodex", email = "fonixacodex@gmail.com" },
+]
+keywords = ["fastapi", "framework", "mcp", "modular", "cli"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: FastAPI",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+]
+
+dependencies = [
+    # --- web ---
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "python-multipart>=0.0.9",
+    "jinja2>=3.1.0",
+    # --- validation / settings ---
+    "pydantic>=2.7.0",
+    "pydantic-settings>=2.3.0",
+    "email-validator>=2.1.0",
+    "dnspython>=2.6.0",
+    # --- database ---
+    "sqlalchemy[asyncio]>=2.0.0",
+    "alembic>=1.13.0",
+    "asyncpg>=0.29.0",
+    "aiosqlite>=0.20.0",
+    "aiomysql>=0.2.0",
+    # --- auth / security ---
+    "python-jose[cryptography]>=3.3.0",
+    "passlib[bcrypt]>=1.7.4",
+    "bcrypt>=4.0.0,<5.0.0",
+    "slowapi>=0.1.9",
+    # --- cli ---
+    "typer>=0.12.0",
+    "rich>=13.7.0",
+]
+
+[project.optional-dependencies]
+mcp = [
+    "mcp[cli]>=1.2.0,<2.0.0",
+]
+
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=5.0.0",
+    "httpx>=0.28.0",
+    "ruff>=0.5.0",
+    "mypy>=1.10.0",
+    "ipython>=8.0.0",
+]
+
+all = [
+    "mcp[cli]>=1.2.0,<2.0.0",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=5.0.0",
+    "httpx>=0.28.0",
+    "ruff>=0.5.0",
+    "mypy>=1.10.0",
+    "ipython>=8.0.0",
+]
+
+[project.scripts]
+dezh = "cli.main:app"
+
+[project.urls]
+Homepage = "https://github.com/fonixacodex/dezhfast"
+Repository = "https://github.com/fonixacodex/dezhfast"
+Documentation = "https://github.com/fonixacodex/dezhfast#readme"
+Issues = "https://github.com/fonixacodex/dezhfast/issues"
+
+# ---------------------------------------------------------------- build
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app", "framework", "cli"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/app",
+    "/framework",
+    "/cli",
+    "/tests",
+    "/README.md",
+    "/pyproject.toml",
+]
+
+# ---------------------------------------------------------------- ruff
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+exclude = [
+    ".venv",
+    "__pycache__",
+    "storage",
+    "migrations/versions",
+    "alembic",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+extend-ignore = ["B008"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app", "framework", "cli"]
